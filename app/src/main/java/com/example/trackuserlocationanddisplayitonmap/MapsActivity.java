@@ -88,9 +88,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         Log.i("MyInfo", "Ich wurde ausgeführt 2");
         // Add a marker in Sydney and move the camera
-        LatLng userLocation = new LatLng( lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(userLocation).title("Your position"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
+            LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(userLocation).title("Your position"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
+
+
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 600,1, locationListener);
     }
 }
