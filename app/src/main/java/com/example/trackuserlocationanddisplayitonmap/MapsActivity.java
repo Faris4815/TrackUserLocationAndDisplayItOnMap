@@ -27,6 +27,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ActivityMapsBinding binding;
     Location lastKnownLocation;
 
+    //Methode nur zum Testing benutzt, nicht relevant.
+    public Location getMockLocation(double latitude, double longitude) {
+        Location location = new Location(LocationManager.GPS_PROVIDER);
+        location.setLatitude(latitude);
+        location.setLongitude(longitude);
+        return location;
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,20 +48,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
-
-
-
     }
-/*
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-
-    }
-
- */
 
     /**
      * Manipulates the map once available.
@@ -71,26 +67,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
-                /*
+
                 LatLng userLocation = new LatLng( location.getLatitude(), location.getLongitude());
+                mMap.clear();
                 mMap.addMarker(new MarkerOptions().position(userLocation).title("Your position"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
-                */
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,10f));
+
+                Log.i("MyInfo","Ich wurde ausgeführt 3");
             }
         };
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED){
-            requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
         } else {
             Log.i("MyInfo", "User already gave Permission:");
             lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
+            Log.i("MyInfo", "Ich wurde ausgeführt 1");
         }
-        lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+        lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Log.i("MyInfo", "Ich wurde ausgeführt 2");
         // Add a marker in Sydney and move the camera
         LatLng userLocation = new LatLng( lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
         mMap.addMarker(new MarkerOptions().position(userLocation).title("Your position"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 600,1, locationListener);
     }
 }
+
+
+/*Eine Sache zum merken: Aus irgendeinem Grund wird crasht selbst die default Google Maps Activity wenn man die App nicht mit den Run-Button
+startet, sondern mit dem "Apply Changes and restart Activity"-Button. Mir ist noch nicht ganz klar, warum das passiert. Danach lässt sich die
+App auch nicht mehr mit dem Run-Button starten. Um das aber zu fixen, kann man einfach random irgendeine Permission im Manifest hinzufügen
+oder rausnehmen, dann lässt sich die App wieder mit "Run"-Button starten. Aber den "Apply Changes and restart Activity"-Button kann man immernoch
+nicht benutzen
+ */
