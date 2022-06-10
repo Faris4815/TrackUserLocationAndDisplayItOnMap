@@ -3,18 +3,18 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.trackuserlocationanddisplayitonmap"
-        minSdk 27
+        minSdk 33
         targetSdk 31
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        minSdkVersion 27
-        targetSdkVersion 31
+        minSdkVersion 33
+        targetSdkVersion 33
     }
 
     buildTypes {

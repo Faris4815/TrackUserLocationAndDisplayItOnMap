@@ -7,6 +7,8 @@ import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -20,6 +22,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.trackuserlocationanddisplayitonmap.databinding.ActivityMapsBinding;
+
+import java.util.List;
+import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -62,6 +67,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        Geocoder.GeocodeListener geocodeListener = new Geocoder.GeocodeListener() {
+            @Override
+            public void onGeocode(@NonNull List<Address> list) {
+
+            }
+        };
 
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         LocationListener locationListener = new LocationListener() {
